@@ -15,11 +15,10 @@ main() {
       printf("%3.0f %6.2f\n", fahr, celsius);
       fahr += step;
     }
-    celsius = lower;
+
     printf("\ncelsius   fahr\n");
-    while (celsius <= upper) {
+    for (celsius = 0; celsius <= 300; celsius += 20) {
       fahr = (9.0 / 5.0) * celsius + 32.0;
       printf("%6.0f %6.0f\n", celsius, fahr);
-      celsius += step;
     }
 }
