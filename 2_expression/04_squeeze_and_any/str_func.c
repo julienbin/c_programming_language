@@ -2,14 +2,21 @@
 #define MAX_LINE 1000
 
 int get_line(char line[], int maxline);
-int htoi(char s[]);
+void squeeze(char s[], int c);
+void squeeze_str(char s[], char sq[]);
+int any(char s[], char p[]);
 
 main() {
-  char line[MAX_LINE];
+  char source[MAX_LINE];
+  char pattern[MAX_LINE];
 
-  printf("Please input an hex number:\n");
-  get_line(line, MAX_LINE);
-  printf("Integer value is: %d.\n", htoi(line));
+  printf("Please input a source string:\n");
+  get_line(source, MAX_LINE);
+  printf("please input a pattern string:\n");
+  get_line(pattern, MAX_LINE);
+  printf("Find first match char at: %d.\n", any(source, pattern));
+  squeeze_str(source, pattern);
+  printf("Squeeze pattern from sour: %s.\n", source);
 }
 
 int get_line(char line[], int maxline) {
@@ -22,27 +29,29 @@ int get_line(char line[], int maxline) {
   return i;
 }
 
-int htoi(char s[]) {
-  int hexdigit, i, valid, n;
-  
-  i = 0;
-  if (s[0] == '0' && (s[1] == 'x' || s[1] == 'X')) {
-    i += 2;
+void squeeze(char s[], int c) {
+  int i, j;
+
+  for (i = j = 0; s[i] != '\0'; i ++) {
+    if (s[i] != c)
+      s[j++] = s[i];
   }
-  n = 0;
-  valid = 1;
-  while (valid && s[i] != '\0') {
-    if (s[i] >= '0' && s[i] <= '9')
-      hexdigit = s[i] - '0';
-    else if (s[i] >= 'a' && s[i] <= 'f')
-      hexdigit = 10 + s[i] - 'a';
-    else if (s[i] >= 'A' && s[i] <= 'F')
-      hexdigit = 10 + s[i] - 'A';
-    else
-      valid = 0;
-    if (valid)
-      n = 16 * n + hexdigit;
-    i ++;
-  }
-  return n; 
+  s[j] = '\0';
+}
+
+void squeeze_str(char s[], char sq[]) {
+  int i;
+
+  for (i = 0; sq[i] != '\0'; i ++)
+    squeeze(s, sq[i]);
+}
+
+int any(char s[], char p[]) {
+  int i,j;
+
+  for (i = 0; s[i] != '\0'; i ++)
+    for (j = 0; p[j] != '\0'; j ++)
+      if (s[i] == p[j])
+        return i;
+  return -1;
 }
